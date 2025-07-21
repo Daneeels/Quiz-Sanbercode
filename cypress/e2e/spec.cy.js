@@ -1,14 +1,18 @@
 describe('template spec', () => {
-      it('TC - 001 ', () => {
+    it('TC - 001 ', () => {
         
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
         
         cy.get('input[name="username"]').click().type('Admin')
         cy.get('input[name="password"]').click().type('admin123')
 
+        cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/action-summary').as('actionSummary')
+
         cy.get('button[type="submit"]').click()
 
         cy.url().should('include', '/dashboard');
+
+        cy.wait('@actionSummary')
     })
 
     it('TC - 002 ', () => {
