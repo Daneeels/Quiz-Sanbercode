@@ -1,4 +1,10 @@
-describe('template spec', () => {
+import Login from "../PageObjects/LoginPage"
+
+describe('Login Test Scripts', () => {
+
+    // Quiz Sanbercode
+    /*
+    //Test Scripts Without POM
     it('TC - 001 ', () => {
         
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
@@ -49,5 +55,74 @@ describe('template spec', () => {
         cy.get('button[type="submit"]').click()
 
         cy.get('.oxd-alert--error').should('be.visible').and('contain', 'Invalid credentials')
+    })
+        */
+
+
+    //Tugas 17 Sanbercode
+    //Test Scripts With POM
+    const logins = new Login();
+
+    it('TC - 001 (username BENAR & password BENAR)', () =>{
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+        
+        cy.fixture('orangeHRM').then((data) => {
+
+            logins.setUsername(data.username);
+            logins.setPassword(data.password);
+            logins.clickButton();
+
+            logins.assertPositive();
+
+        })
+    })
+
+    it('TC - 002 (username SALAH & password SALAH)', () =>{
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+        
+        cy.fixture('orangeHRM').then((data) => {
+
+            logins.setUsername("yayan");
+            logins.setPassword("0987");
+            logins.clickButton();
+
+            logins.assertNegative();
+
+        })
+
+    })
+
+    it('TC - 003 (username BENAR & password SALAH)', () =>{
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+        
+        cy.fixture('orangeHRM').then((data) => {
+
+            logins.setUsername(data.username);
+            logins.setPassword("0987");
+            logins.clickButton();
+
+            logins.assertNegative();
+
+        })
+
+    })
+
+    it('TC - 004 (username SALAH & password BENAR)', () =>{
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+        
+        cy.fixture('orangeHRM').then((data) => {
+
+            logins.setUsername("yayan");
+            logins.setPassword(data.password);
+            logins.clickButton();
+
+            logins.assertNegative();
+
+        })
+
     })
 })
