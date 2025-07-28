@@ -14,6 +14,7 @@ class Login {
 
         cy.fixture('orangeLogin').then((data) => {
 
+            cy.wait(1000);
             this.setUsername(data.username);
             this.setPassword(data.password);
             this.clickLoginButton();

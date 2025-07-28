@@ -175,7 +175,7 @@ describe('Login Test Scripts', () => {
     const dirs = new Directory();
 
     //NOT Passed (Data karyawans sudah benar namun tidak dapat ditemukan)
-    it('TC - C01 (Search seorang karyawan pada directory)', () =>{
+    it('TC - C01 (Search seorang karyawan pada directory (Dengan Mengetik Full Name))', () =>{
 
 
         logins.actionLogin();
@@ -185,6 +185,28 @@ describe('Login Test Scripts', () => {
         cy.fixture('orangeDirectory').then((data) => {
 
             dirs.setEmployeeName(data.employeeName);
+            dirs.setJobTitle(data.jobTitle);
+            dirs.setLocation(data.location);
+
+            dirs.clickSearchButton();
+
+            dirs.assertDirPossitive()
+        })
+        
+    })
+
+    it('TC - C01 - Solution (Search seorang karyawan pada directory (Hanya mengetik first name))', () =>{
+
+
+        logins.actionLogin();
+
+        dirs.enterDirectory();
+
+        cy.fixture('orangeDirectory').then((data) => {
+
+            dirs.setEmployeeName("Peter");
+            cy.wait(2000);
+            cy.get(dirs.txtEmployeeName).type("{downarrow}{enter}");
             dirs.setJobTitle(data.jobTitle);
             dirs.setLocation(data.location);
 

@@ -8,7 +8,7 @@ class Directory {
     dataInput = ".oxd-select-option"
     btnSearch = "button[type='submit']"
 
-    employeeCards = ".oxd-grid-3"
+    employeeCards = ".oxd-sheet"
 
     //Data Inputs
     enterDirectory(){
@@ -17,6 +17,7 @@ class Directory {
 
     setEmployeeName(employeeName){
         cy.get(this.txtEmployeeName).type(employeeName);
+        // cy.get(this.txtEmployeeName).type(`{enter}`); Accessing parts of keyboard
     }
 
     setJobTitle(jobTitle){
