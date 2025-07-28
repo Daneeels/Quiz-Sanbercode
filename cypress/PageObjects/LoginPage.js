@@ -1,10 +1,27 @@
 class Login {
     
+    //Locators
     txtUsername = "input[name='username']";
     txtPassword = "input[name='password']";
     btnSubmit = "button[type='submit']";
     lblError = ".oxd-alert--error";
     
+
+    //Login Action
+    actionLogin(){
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+
+        cy.fixture('orangeLogin').then((data) => {
+
+            this.setUsername(data.username);
+            this.setPassword(data.password);
+            this.clickLoginButton();
+
+        })
+    }
+
+    //Data Inputs
     setUsername(usernameData){
         cy.get(this.txtUsername).type(usernameData);
     }
@@ -13,10 +30,11 @@ class Login {
         cy.get(this.txtPassword).type(passwordData);
     }
 
-    clickButton(){
+    clickLoginButton(){
         cy.get(this.btnSubmit).click();
     }
 
+    //Assertions
     assertPositive(){
         cy.url().should('include', '/dashboard');
     }

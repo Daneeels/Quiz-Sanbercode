@@ -1,8 +1,11 @@
+import Directory from "../PageObjects/DirectoryPage";
 import Login from "../PageObjects/LoginPage"
+import ForgotPass from "../PageObjects/ForgotPassPage"
 
 describe('Login Test Scripts', () => {
 
     // Quiz Sanbercode
+    
     /*
     //Test Scripts Without POM
     it('TC - 001 ', () => {
@@ -56,37 +59,41 @@ describe('Login Test Scripts', () => {
 
         cy.get('.oxd-alert--error').should('be.visible').and('contain', 'Invalid credentials')
     })
-        */
+    */
 
+    //Tugas Akhir
+    //((((((Login))))))
 
     //Tugas 17 Sanbercode
     //Test Scripts With POM
     const logins = new Login();
 
-    it('TC - 001 (username BENAR & password BENAR)', () =>{
+    //Passed
+    it('TC - A01 (username BENAR & password BENAR)', () =>{
 
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
         
-        cy.fixture('orangeHRM').then((data) => {
+        cy.fixture('orangeLogin').then((data) => {
 
             logins.setUsername(data.username);
             logins.setPassword(data.password);
-            logins.clickButton();
+            logins.clickLoginButton();
 
             logins.assertPositive();
 
         })
     })
 
-    it('TC - 002 (username SALAH & password SALAH)', () =>{
+    //Passed
+    it('TC - A02 (username SALAH & password SALAH)', () =>{
 
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
         
-        cy.fixture('orangeHRM').then((data) => {
+        cy.fixture('orangeLogin').then((data) => {
 
             logins.setUsername("yayan");
             logins.setPassword("0987");
-            logins.clickButton();
+            logins.clickLoginButton();
 
             logins.assertNegative();
 
@@ -94,15 +101,16 @@ describe('Login Test Scripts', () => {
 
     })
 
-    it('TC - 003 (username BENAR & password SALAH)', () =>{
+    //Passed
+    it('TC - A03 (username BENAR & password SALAH)', () =>{
 
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
         
-        cy.fixture('orangeHRM').then((data) => {
+        cy.fixture('orangeLogin').then((data) => {
 
             logins.setUsername(data.username);
             logins.setPassword("0987");
-            logins.clickButton();
+            logins.clickLoginButton();
 
             logins.assertNegative();
 
@@ -110,19 +118,81 @@ describe('Login Test Scripts', () => {
 
     })
 
-    it('TC - 004 (username SALAH & password BENAR)', () =>{
+    //Passed
+    it('TC - A04 (username SALAH & password BENAR)', () =>{
 
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
         
-        cy.fixture('orangeHRM').then((data) => {
+        cy.fixture('orangeLogin').then((data) => {
 
             logins.setUsername("yayan");
             logins.setPassword(data.password);
-            logins.clickButton();
+            logins.clickLoginButton();
 
             logins.assertNegative();
 
         })
 
     })
+
+    //((((((Forgot Password))))))
+
+    const forgots = new ForgotPass();
+
+    //Passed
+    it('TC - B01 (Forgot password dengan username BENAR)', () =>{
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+
+        forgots.enterForgotPass();
+
+        cy.fixture('orangeLogin').then((data) => {
+
+            forgots.setUsername(data.username);
+            forgots.clickResetButton();
+
+            forgots.assertForgotPositive();
+        })
+        
+        
+    })
+
+    //NOT Passed (Forgot password masih bisa dilakukan bahkan dengan username yang salah)
+    it('TC - B02 (Forgot password dengan username SALAH)', () =>{
+
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+
+        forgots.enterForgotPass();
+
+        forgots.setUsername("ayamCrispy11");
+        forgots.clickResetButton();
+
+        forgots.assertForgotNegative();
+
+    })
+
+    //((((((Directory))))))
+    const dirs = new Directory();
+
+    //NOT Passed (Data karyawans sudah benar namun tidak dapat ditemukan)
+    it('TC - C01 (Search seorang karyawan pada directory)', () =>{
+
+
+        logins.actionLogin();
+
+        dirs.enterDirectory();
+
+        cy.fixture('orangeDirectory').then((data) => {
+
+            dirs.setEmployeeName(data.employeeName);
+            dirs.setJobTitle(data.jobTitle);
+            dirs.setLocation(data.location);
+
+            dirs.clickSearchButton();
+
+            dirs.assertDirPossitive()
+        })
+        
+    })
+
 })
